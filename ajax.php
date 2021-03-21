@@ -28,13 +28,14 @@ elseif (isset($_GET['listen'])) {
 	
 	$rows_count = $_GET['rows_count'];
 
-	$i = 0;
+	$time = time();
 
 	while (true) {
 
-    if ($i === 25) {
+		$interval = time() - $time;
+    if ($interval == 60) {
 
-      $json = json_encode(["status" => false]);
+      $json = json_encode(["status" => false, "time" => $interval]);
 
       echo $json;
       break;
@@ -51,14 +52,13 @@ elseif (isset($_GET['listen'])) {
 
         $json = json_encode([
             "status" => true,
-            "messages" => $messagesList
+            "messages" => $messagesList,
+            "time" => $interval,
         ]);
 
         echo $json;
         break;
     }
-
-    $i++;
 
     sleep(0.8);
 	}

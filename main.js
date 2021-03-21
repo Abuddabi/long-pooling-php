@@ -37,8 +37,10 @@ function listenMessages(count) {
         .then(data => {
             if (data.status) {
                 renderMessages(data.messages)
+                console.log('status-true', data.time);
                 listenMessages(data.messages.length)
             } else {
+                console.log('status-false', data.time);
                 listenMessages(count)
             }
         })
