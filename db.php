@@ -1,13 +1,23 @@
 <?php
 
 // database config
-const DB_NAME = 'db';
-const DB_USER = 'root';
-const DB_PASSWORD = 'root';
+$env = require ".env";
+$env = $env['DB'];
 
 // pdo connect
-$db = new PDO(
-    'mysql:host=localhost;dbname=' . DB_NAME,
-    DB_USER,
-    DB_PASSWORD
-);
+$dsn = "{$env['DB_CONNECTION']}:host={$env['DB_HOST']};port={$env['DB_PORT']};";
+
+try{  
+	$db = new PDO(
+	    "{$dsn}dbname=" . $env['DB_DATABASE'],
+	    $env['DB_USERNAME'],
+	    $env['DB_PASSWORD'],
+	   	[
+	   		PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
+	   		PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+	   	]
+	);
+}
+catch(PDOException $e) {
+	die($e->getMessage());
+}
